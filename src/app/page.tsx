@@ -1,103 +1,132 @@
-import Image from "next/image";
+'use client'
+
+import { useEffect,useState } from "react";
+import HerroBanner from "@/components/HerroBanner";
+import { Destinasi } from '@/types/destinasi'
+import {Popular} from '@/types/popular';
+import {Propertibaru} from '@/types/propertibaru';
+import { fetcher } from '@/lib/fetcher';
+import TiltedCard from "@/components/TiltedCard";
+import Gallerycard from "@/components/Gallerycard";
+import { Landmark } from "lucide-react"
+import RotatingText from "./../components/ui/RotatingText"
+import PropertibaruList from "@/components/Propertibaru";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [destinasiList, setDestinasiList] = useState<Destinasi[]>([])
+  const [popularList, setPopularList] = useState<Popular[]>([])
+  const [propertibaru, setPropertiBaruList] = useState<Propertibaru[]>([])
+  const [loading, setLoading] = useState(false)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+  async function fetchDestinasi(query = '') {
+    setLoading(true)
+    try {
+      // Contoh fetch API - ganti dengan endpoint sebenarnya
+      const data = await fetcher<Destinasi[]>(`/api/destinasi?search=${encodeURIComponent(query)}`)
+      setDestinasiList(data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function fetchPopular(query = '') {
+    setLoading(true)
+    try {
+      // Contoh fetch API - ganti dengan endpoint sebenarnya
+      const data = await fetcher<Popular[]>(`/api/gallerycard?search=${encodeURIComponent(query)}`)
+      setPopularList(data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function fetchPropertibaru(query = '') {
+    setLoading(true)
+    try {
+      // Contoh fetch API - ganti dengan endpoint sebenarnya
+      const data = await fetcher<Propertibaru[]>(`/api/propertibaru?search=${encodeURIComponent(query)}`)
+      setPropertiBaruList(data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchDestinasi()
+  }, [])
+
+  useEffect(() => {
+    fetchPopular()
+  }, [])
+
+  useEffect(() => {
+    fetchPropertibaru()
+  }, [])
+
+  return (
+    <main>
+        <section className="p-10">
+          <HerroBanner />
+        </section>
+        <section className="">
+          <h1 className="text-4xl font-bold flex items-center gap-2 mb-4 lg:px-25">
+            <Landmark className="w-6 h-6 text-primary" />
+            Terpopuler
+          </h1>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5 px-4 sm:px-8 lg:px-25">
+                {destinasiList.map(d => <TiltedCard key={d.id}
+                  image={d.image}
+                  captionText={d.name}
+                  slug={d.id} />)}
+            </div>
+          )}
+        </section>
+        <section className="m-10 px-80">
+              {/* Banner Content */}
+                <RotatingText
+                    texts={['TERPECAYA', 'CEPAT', 'HEMAT', 'MUDAH']}
+                    mainClassName="h-20 px-2 sm:px-2 md:px-3 bg-fuchsia-300 text-white overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center text-lg sm:text-xl md:text-7xl font-bold rounded-full"
+                    staggerFrom={"last"}
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    exit={{ y: "-120%" }}
+                    staggerDuration={0.025}
+                    splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                    transition={{ type: "spring", damping: 30, stiffness: 150 }}
+                    rotationInterval={3000}
+                  />
+        </section>
+        <section>
+              <h1 className="text-3xl font-bold flex items-center gap-2 mb-4 lg:px-25">
+                <Landmark className="w-6 h-6 text-primary" />
+                Rekomendasi Sesuai Pencarianmu
+              </h1>
+              <div className="flex gap-4 pb-4 px-30 grid-cols-1 sm:grid-cols-1 lg-grid-cols-5">
+                {popularList.map(d => (
+                  <Gallerycard key={d.id} image={d.image} slug={d.id} description={d.description} />
+                ))}
+              </div>
+        </section>
+        <section className="bg-sky-50">
+            <h1 className="text-3xl font-bold flex items-center gap-2 mb-4 lg:px-25 mt-px-50 p-5">
+                <Landmark className="w-6 h-6 text-primary" />
+                Daftar Properti Baru
+              </h1>
+              <div className="flex overflow-x-auto gap-4 pb-4 px-30">
+                {propertibaru.map(d => (
+                  <PropertibaruList key={d.id} image={d.image} title={d.title} slug={d.id} description={d.description} link1={d.link1} />
+                ))}
+              </div>
+        </section>
+    </main>
+  )
 }
