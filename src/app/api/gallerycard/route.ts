@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
-import { Popular } from "@/types/popular";
 
-const data: Popular[] = [
+// Remove the import and define the type inline or just use inline typing
+// This ensures no import issues
+
+const data = [
     {
         id:'1',
         image:'/images/card.jpg',
@@ -35,10 +37,20 @@ const data: Popular[] = [
 ]
 
 export async function GET(request: Request) {
-  const url = new URL(request.url)
-  const search = url.searchParams.get('search')?.toLowerCase() || ''
+  try {
+    const url = new URL(request.url)
+    const search = url.searchParams.get('search')?.toLowerCase() || ''
 
-  const filtered = data.filter((d) => d.title.toLowerCase().includes(search))
+    // Safety check - though data is hardcoded, this prevents any weird issues
+    if (!data || !Array.isArray(data)) {
+      console.error('Popular data is not available')
+      return NextResponse.json([]) // Return empty array instead of crashing
+    }
 
-  return NextResponse.json(filtered)
+    const filtered = data.filter((d) => d.title.toLowerCase().includes(search))
+    return NextResponse.json(filtered)
+  } catch (error) {
+    console.error('Error in popular API:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
 }

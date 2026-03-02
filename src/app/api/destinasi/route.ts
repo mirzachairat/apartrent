@@ -1,6 +1,14 @@
 import { NextResponse } from 'next/server'
-import { Destinasi } from '@/types/destinasi'
 
+// Define the type inline to avoid import issues
+interface Destinasi {
+  id: string
+  name: string
+  location: string
+  image: string
+}
+
+// Make sure data is always defined
 const data: Destinasi[] = [
   {
     id: '1',
@@ -28,12 +36,17 @@ const data: Destinasi[] = [
   },
 ]
 
-
 export async function GET(request: Request) {
-  const url = new URL(request.url)
-  const search = url.searchParams.get('search')?.toLowerCase() || ''
+  try {
+    const url = new URL(request.url)
+    const search = url.searchParams.get('search')?.toLowerCase() || ''
 
-  const filtered = data.filter((d) => d.name.toLowerCase().includes(search))
-
-  return NextResponse.json(filtered)
+    // This will never crash because data is hardcoded
+    const filtered = data.filter((d) => d.name.toLowerCase().includes(search))
+    
+    return NextResponse.json(filtered)
+  } catch (error) {
+    console.error('Error:', error)
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+  }
 }
