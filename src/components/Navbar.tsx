@@ -29,9 +29,9 @@ export default function Navbar() {
     <header className={`bg-white fixed top-0 w-full z-50 transition-shadow duration-300 ${
       scrolled ? 'shadow-md' : 'shadow-sm'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
+      <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo - left side */}
           <Link href="/" className="flex-shrink-0" onClick={handleLinkClick}>
             <Image 
               src={'/images/logoproperti.png'} 
@@ -43,26 +43,26 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
+          {/* Desktop Navigation - centered on desktop */}
+          <nav className="hidden md:flex items-center justify-center flex-1 space-x-4 lg:space-x-6">
+            <Link href="/" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base whitespace-nowrap">
               Home
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
+            <Link href="/about" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base whitespace-nowrap">
               About
             </Link>
-            <Link href="/services" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
+            <Link href="/services" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base whitespace-nowrap">
               Services
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base">
+            <Link href="/contact" className="text-gray-700 hover:text-blue-600 transition-colors text-sm lg:text-base whitespace-nowrap">
               Contact
             </Link>
           </nav>
 
           {/* Desktop Right Section */}
-          <div className="hidden md:flex items-center gap-2 lg:gap-3">
+          <div className="hidden md:flex items-center gap-2 lg:gap-3 flex-shrink-0">
             <Link href="/iklan">
-              <Button variant="outline" color="blue" className="whitespace-nowrap text-sm lg:text-base px-2 lg:px-3">
+              <Button variant="outline" color="blue" className="whitespace-nowrap text-sm lg:text-base px-2 lg:px-3 py-1.5">
                 <MegaphoneIcon className="h-4 w-4 lg:h-5 lg:w-5 text-orange-500 mr-1" />
                 <span className="hidden sm:inline">Pasang Iklan</span>
                 <span className="sm:hidden">Iklan</span>
@@ -76,14 +76,24 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile menu toggle */}
-          <button 
-            onClick={() => setIsOpen(!isOpen)} 
-            className="md:hidden p-2 rounded hover:bg-gray-100 transition-colors"
-            aria-label={isOpen ? "Close menu" : "Open menu"}
-          >
-            {isOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
-          </button>
+          {/* Mobile: Show only burger menu and hide other elements */}
+          <div className="flex md:hidden items-center gap-2">
+            {/* Optional: Show small Iklan button on mobile if needed */}
+            <Link href="/iklan" className="sm:hidden">
+              <Button variant="outline" color="blue" className="px-2 py-1 text-xs">
+                <MegaphoneIcon className="h-4 w-4 text-orange-500" />
+              </Button>
+            </Link>
+            
+            {/* Burger menu button */}
+            <button 
+              onClick={() => setIsOpen(!isOpen)} 
+              className="p-2 rounded hover:bg-gray-100 transition-colors"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+            >
+              {isOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -95,28 +105,28 @@ export default function Navbar() {
                 <nav className="flex flex-col">
                   <Link 
                     href="/" 
-                    className="block py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded px-3"
+                    className="block py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded px-3 text-base"
                     onClick={handleLinkClick}
                   >
                     Home
                   </Link>
                   <Link 
                     href="/about" 
-                    className="block py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded px-3"
+                    className="block py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded px-3 text-base"
                     onClick={handleLinkClick}
                   >
                     About
                   </Link>
                   <Link 
                     href="/services" 
-                    className="block py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded px-3"
+                    className="block py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded px-3 text-base"
                     onClick={handleLinkClick}
                   >
                     Services
                   </Link>
                   <Link 
                     href="/contact" 
-                    className="block py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded px-3"
+                    className="block py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded px-3 text-base"
                     onClick={handleLinkClick}
                   >
                     Contact
@@ -141,7 +151,7 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Overlay - now with lower z-index and pointer-events set to auto only on the overlay itself */}
+            {/* Overlay */}
             <div 
               className="md:hidden fixed inset-0 bg-black bg-opacity-50"
               style={{ top: '4rem', zIndex: 40 }}

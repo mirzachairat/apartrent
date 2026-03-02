@@ -25,16 +25,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >
-        <div className="flex flex-col min-h-screen">
-          <Navbar/>
-          <main className="flex-grow">
-             {children}
+        <div className="flex flex-col min-h-full">
+          <Navbar />
+          {/* Main content with padding top for fixed navbar */}
+          <main className="flex-grow pt-16">
+            {children}
           </main>
-          <Footer/>
+          <Footer />
         </div>
       </body>
     </html>
